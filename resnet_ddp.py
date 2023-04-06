@@ -43,7 +43,7 @@ def evaluate(model, device, test_loader):
 
 
 def main():
-  num_epochs_default = 10
+  num_epochs_default = 300
   batch_size_default = 256  # 1024
   learning_rate_default = 0.1
   random_seed_default = 0
@@ -67,7 +67,7 @@ def main():
   random_seed = argv.random_seed
   model_dir = argv.model_dir
   model_filename = argv.model_filename
-  resume = argv.resume
+  resume = True
   print(argv)
 
   # Create directories outside the PyTorch program
@@ -84,9 +84,7 @@ def main():
   local_rank = rank % torch.cuda.device_count()
   print(f"Start running basic DDP example on rank {rank}.- {local_rank}")
 
-
   model = torchvision.models.resnet18(pretrained=False)
-
   device = torch.device("cuda:{}".format(local_rank))
   model = model.to(device)
   ddp_model = torch.nn.parallel.DistributedDataParallel(model, device_ids=[local_rank], output_device=local_rank)
@@ -95,6 +93,7 @@ def main():
   # We only save the model who uses device "cuda:0"
   # To resume, the device for the saved model would also be "cuda:0"
   if resume == True:
+    print("Resume training the model")
     map_location = {"cuda:0": "cuda:{}".format(local_rank)}
     ddp_model.load_state_dict(torch.load(model_filepath, map_location=map_location))
 

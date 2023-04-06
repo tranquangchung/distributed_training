@@ -1,6 +1,6 @@
-```
-Tài liệu tham khảo
-```
+
+###Tài liệu tham khảo
+
 1. https://leimao.github.io/blog/PyTorch-Distributed-Training/
 2. https://pytorch.org/tutorials/intermediate/ddp_tutorial.html
 
