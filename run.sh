@@ -1,0 +1,1 @@
+docker run -it --shm-size='125gb' --gpus all --rm -v $(pwd):/mnt --network=host multilingual_research:0.0.6 bash
